@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background:rgb(236, 200, 200);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container {
+        width: 600px;
+        background:rgb(205, 205, 157);
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(157, 73, 73, 0.15);
+
+    }
+
+    h1 {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 8px;
+    }
+
+    .subtitle {
+        text-align: center;
+        color: #777;
+        margin-bottom: 20px;
+    }
+
+    .Suggestions {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+    }
+
+    .Suggestions button {
+        padding: 8px 15px;
+        border: 1px solid #2563eb;
+        border-radius: 20px;
+        background: #e8f0fe;
+        color: #2563eb;
+        cursor: pointer;
+    }
+
+    .Suggestions button:hover {
+        background: #2563eb;
+        color: white;
+    }
+
+    #chat-box {
+        height: 300px;
+        overflow-y: auto;
+        padding: 15px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        background: #f8fafc;
+    }
+
+    .bot-msg {
+        width: fit-content;
+        max-width: 80%;
+        background: #e2e8f0;
+        color: #333;
+        padding: 12px;
+        margin-bottom: 12px;
+        border-radius: 12px 12px 12px 2px;
+        line-height: 1.5;
+    }
+
+    .user-msg {
+        width: fit-content;
+        max-width: 80%;
+        background: #2563eb;
+        color: white;
+        padding: 12px;
+        margin-left: auto;
+        margin-bottom: 12px;
+        border-radius: 12px 12px 2px 12px;
+        line-height: 1.5;
+    }
+
+    .time {
+        font-size: 11px;
+        margin-top: 5px;
+        text-align: right;
+        opacity: 0.7;
+    }
+
+    .input-area {
+        display: flex;
+        gap: 10px;
+    }
+
+    input {
+        flex: 1;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        outline: none;
+        font-size: 15px;
+    }
+
+    input:focus {
+        border-color: #2563eb;
+    }
+
+    .input-area button {
+        padding: 12px 20px;
+        background: #2563eb;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .input-area button:hover {
+        background: #1d4ed8;
+    }
+    .bot-msg::before {
+    content: "🤖 ";
+}
+
+.user-msg::before {
+    content: "👤 ";
+}
+.input-area button {
+    padding: 13px 22px;
+    background: linear-gradient(135deg, #7c3aed, #0891b2);
+    color: white;
+    border: 2px solid #6d28d9;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+
+    box-shadow: 0 5px 12px rgba(79, 70, 229, 0.25);
+    transition: 0.3s;
+}
+
+.input-area button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(79, 70, 229, 0.35);
+}
+h1 {
+    text-align: center;
+    margin-bottom: 8px;
+    font-size: 30px;
+
+    color: #6d28d9;
+
+    text-shadow:
+        2px 2px 5px rgba(109, 40, 217, 0.2);
+}
+
+.subtitle {
+    text-align: center;
+    color: #0891b2;
+    margin-bottom: 22px;
+    font-size: 16px;
+    font-weight: bold;
+}
+</style>
+</head>
+<body>
+    <div class="container">
+        <!--heading-->
+        <h1>🎓 GenAI Academic Helpdesk 🤖</h1>
+        <p class="subtitle">✨ Your Intelligent Campus Assistant ✨</p>
+
+        <!--Suggested Questions-->
+        <!-- <div class="Suggestions">
+            <button onclick="setQuestion('what is the Library timing')">Library</button>
+            <button onclick="setQuestion('what is placement eligibility')">Placements</button>
+            <button onclick="setQuestion('what are the hostel rules')">Hostel</button>
+            <button onclick="setQuestion('when do exams start')">Exams</button>
+        </div> -->
+            <div class="Suggestions">
+            <button onclick="setQuestion('what is the Library timing')">📚 Library</button>
+            <button onclick="setQuestion('what is placement eligibility')">💼 Placements</button>
+            <button onclick="setQuestion('what are the hostel rules')">🏠 Hostel</button>
+            <button onclick="setQuestion('when do exams start')">📝 Exams</button>
+            </div>
+        <div id="chat-box">
+            <div class="bot-msg">
+                Hello! I am your GenAi Academic Assistant ask anything about:Syllabus,Placements,Hostel,Exams and more.
+            </div>
+        </div>
+
+        <!--input area-->
+        <div class="input-area">
+            <input id="question" type="text" placeholder="Ask your question">
+                   <button onclick="ask()">Send</button>
+        </div>
+    </div>
+    <script>
+    function setQuestion(text) {
+        document.getElementById("question").value = text;
+    }
+
+    function ask() {
+        let q = document.getElementById("question").value;
+
+        if (q.trim() === "") return;
+
+        let box = document.getElementById("chat-box");
+
+        box.innerHTML += `
+            <div class="user-msg">
+                ${q}
+                <div class="time">
+                    ${new Date().toLocaleTimeString()}
+                </div>
+            </div>
+        `;
+
+        // Clear input after sending
+        document.getElementById("question").value = "";
+
+        // Automatically scroll to latest message
+        box.scrollTop = box.scrollHeight;
+    }
+
+    // Press Enter to send
+    document.getElementById("question").addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            ask();
+        }
+    });
+</script>
+</body>
+</html>
